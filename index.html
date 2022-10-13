@@ -12,15 +12,25 @@
       padding: 0;
       box-sizing: border-box;
     }
-    iframe {
-      width: 100vh;
-      height: 100vh;
-      border: 0;
+    #content {
       transform: rotate(180deg);
     }
   </style>
 </head>
 <body>
-  <iframe src="https://storyly.io"></iframe>
+  <div id="content"></div>
+
+  <script>
+    fetch('https://cors-anywhere.herokuapp.com/https://storyly.io')
+      .then(res => res.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const head = doc.querySelector('head');
+        const body = doc.querySelector('body');
+        document.querySelector('head').append(...head.childNodes);
+        document.querySelector('#content').append(...body.childNodes);
+      });
+  </script>
 </body>
 </html>
